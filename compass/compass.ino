@@ -17,16 +17,15 @@ Adafruit_SSD1306 screen(0); //create screen object, no reset pin
 String direction_string = "Undefined";
 
 void setup(){
-  Serial.begin(9600); //debugging to USB
-
-  mag.initialize();
-  screen.begin(SSD1306_SWITCHCAPVCC, 0x78);
-  screen.setTextSize(1);
-  screen.clearDisplay();
-  screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
-  screen.display();
-  delay(1000); // hold it for one second
-  screen.clearDisplay();
+	Serial.begin(9600); //debugging to USB
+	mag.initialize();
+	screen.begin(SSD1306_SWITCHCAPVCC, 0x78);
+	screen.setTextSize(1);
+	screen.clearDisplay();
+	screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
+	screen.display();
+	delay(1000); // hold it for one second
+	screen.clearDisplay();
 }
 
 #define circle_radius 16
