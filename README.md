@@ -17,6 +17,9 @@ Not just a great project for the coming holiday break, this compass can be used 
 
 ## Software and Libraries
 
+| Library | Author | Version |
+| --- | --- | --- |
+| Adafruit_GFX | Adafruit |
 ## Assembly
 
 ## Programming
