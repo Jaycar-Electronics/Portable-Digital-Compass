@@ -1,10 +1,16 @@
 //#include <SparkFun_MAG3110.h>
 #include <i2c_MAG3110.h>
-#include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <Wire.h>
 
 MAG3110 mag; //create magnetometer object
-Adafruit_SSD1306 screen(0); //create screen object, no reset pin
+//Adafruit_SSD1306 screen(4); //create screen object, no reset pin
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 32
+#define OLED_RESET 4
+//Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 screen(0);
 
 #include "./startup_bitmap.h"
 
@@ -19,8 +25,8 @@ String direction_string = "Undefined";
 void setup(){
   Serial.begin(9600); //debugging to USB
 
-  mag.initialize();
-  screen.begin(SSD1306_SWITCHCAPVCC, 0x78);
+  //mag.initialize();
+  screen.begin(SSD1306_SWITCHCAPVCC, 0x3c);
   screen.setTextSize(1);
   screen.clearDisplay();
   screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
@@ -34,8 +40,8 @@ void setup(){
 #define quater_pi 0.785382
 
 void loop(){
-    float xyz[3];
-    mag.getMeasurement(xyz);
+    float xyz[3] = {0,0,0};
+    //mag.getMeasurement(xyz);
     int heading = 0;
     int x = xyz[0];
     int y = xyz[1];
@@ -45,8 +51,11 @@ void loop(){
     //32 x 32 is what we'd use for the rotating compass
     //draw a circle starting at 16,16   and with a radius of 16 (32 dia.)
     screen.drawCircle(16,16, circle_radius, WHITE);
+    //center of the circle is at 16,16
+    int Cx = 16;
+    int Cy = 16;
     float radians = 0;
-    int ax = sin(radians)  * circle_radius;
+    int ax = Cx + sin(radians)  * circle_radius;
     int ay = cos(radians)  * circle_radius;
     int bx = sin(radians+quater_pi) * half_radius;
     int by = cos(radians+quater_pi) * half_radius;
