@@ -23,16 +23,16 @@ Adafruit_SSD1306 screen(0);
 String direction_string = "Undefined";
 
 void setup(){
-  Serial.begin(9600); //debugging to USB
 
-  //mag.initialize();
-  screen.begin(SSD1306_SWITCHCAPVCC, 0x3c);
-  screen.setTextSize(1);
-  screen.clearDisplay();
-  screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
-  screen.display();
-  delay(1000); // hold it for one second
-  screen.clearDisplay();
+	Serial.begin(9600); //debugging to USB
+	mag.initialize();
+	screen.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+	screen.setTextSize(1);
+	screen.clearDisplay();
+	screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
+	screen.display();
+	delay(1000); // hold it for one second
+	screen.clearDisplay();
 }
 
 #define circle_radius 16
@@ -41,7 +41,7 @@ void setup(){
 
 void loop(){
     float xyz[3] = {0,0,0};
-    //mag.getMeasurement(xyz);
+    mag.getMeasurement(xyz);
     int heading = 0;
     int x = xyz[0];
     int y = xyz[1];
