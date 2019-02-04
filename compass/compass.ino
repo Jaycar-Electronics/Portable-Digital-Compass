@@ -44,7 +44,7 @@ double rad = 0;
 
 void loop(){
 	screen.clearDisplay();
-	rad += 0.05; 
+	rad += 0.05;
 	rad = rad > 6.283 ? rad - 6.283 : rad;
 
 	float xyz[3] = {0,0,0};
@@ -61,10 +61,9 @@ void loop(){
 	//draw a circle starting at 16,16   and with a radius of 16 (32 dia.)
 	int Cx = 16;
 	int Cy = 16;
-	
 	screen.drawCircle(Cx,Cy, circle_radius, WHITE);
 	//center of the circle is at 16,16
-   
+
 	int ax = sin(rad)  * circle_radius;
 	int ay = cos(rad)  * circle_radius;
 	int bx = sin(rad+half_pi) * half_radius;
