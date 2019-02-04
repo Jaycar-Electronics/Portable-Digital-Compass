@@ -38,61 +38,76 @@ void setup(){
 #define circle_radius 16
 #define half_radius 8
 #define quater_pi 0.785382
+#define half_pi 1.5708
+
+double rad = 0;
 
 void loop(){
-    float xyz[3] = {0,0,0};
-    mag.getMeasurement(xyz);
-    int heading = 0;
-    int x = xyz[0];
-    int y = xyz[1];
-    int z = xyz[2];
-    //heading = mag.readHeading();
+	screen.clearDisplay();
+	rad += 0.05; 
+	rad = rad > 6.283 ? rad - 6.283 : rad;
 
-    //32 x 32 is what we'd use for the rotating compass
-    //draw a circle starting at 16,16   and with a radius of 16 (32 dia.)
-    screen.drawCircle(16,16, circle_radius, WHITE);
-    //center of the circle is at 16,16
-    int Cx = 16;
-    int Cy = 16;
-    float radians = 0;
-    int ax = Cx + sin(radians)  * circle_radius;
-    int ay = cos(radians)  * circle_radius;
-    int bx = sin(radians+quater_pi) * half_radius;
-    int by = cos(radians+quater_pi) * half_radius;
-    int cx = sin(radians-quater_pi) * half_radius;
-    int cy = cos(radians-quater_pi) * half_radius;
+	float xyz[3] = {0,0,0};
+	mag.getMeasurement(xyz);
+	int heading = 0;
+	int x = xyz[0];
+	int y = xyz[1];
+	int z = xyz[2];
+	//heading = mag.readHeading();
+	Serial.print(x,DEC);
+	Serial.print(y,DEC);
+	Serial.println(z,DEC);
+	//32 x 32 is what we'd use for the rotating compass
+	//draw a circle starting at 16,16   and with a radius of 16 (32 dia.)
+	int Cx = 16;
+	int Cy = 16;
+	
+	screen.drawCircle(Cx,Cy, circle_radius, WHITE);
+	//center of the circle is at 16,16
+   
+	int ax = sin(rad)  * circle_radius;
+	int ay = cos(rad)  * circle_radius;
+	int bx = sin(rad+half_pi) * half_radius;
+	int by = cos(rad+half_pi) * half_radius;
+	int cx = sin(rad-half_pi) * half_radius;
+	int cy = cos(rad-half_pi) * half_radius;
 
-    //north facing triangle is filled in
-    screen.fillTriangle(ax,ay,bx,by,cx,cy, WHITE);
-    //south facing triangle is outlined
-    screen.drawTriangle(-ax,-ay,bx,by,cx,cy, WHITE);
+	//north facing triangle is filled in
+	screen.fillTriangle(
+		Cx + ax, Cy + ay,
+		Cx + bx, Cy + by,
+		Cx + cx, Cy + cy, WHITE);
+	screen.drawTriangle(
+		Cx - ax, Cy - ay,	//reverse the outlined
+		Cx + bx, Cy + by,
+		Cx + cx, Cy + cy, WHITE);
 
-    // -------------------------------------------------- drawing static strings
-    // leaving 96 x 32  for text
-    screen.setCursor(text_offset,0);
-    screen.print(F("Heading"));
+	// -------------------------------------------------- drawing static strings
+	// leaving 96 x 32  for text
+	screen.setCursor(text_offset,0);
+	screen.print(F("Heading"));
 
-    screen.setCursor(text_offset, 12);
-    screen.println(F("raw values:")); //drops 8 pixels
-    screen.println(F("x:"));
-    screen.println(F("y:"));
-    screen.println(F("z:"));
+	screen.setCursor(text_offset, 12);
+	screen.println(F("raw values:")); //drops 8 pixels
+	screen.println(F("x:"));
+	screen.println(F("y:"));
+	screen.println(F("z:"));
 
-    // ------------------------------------------------- drawing dynamic strings
-    //move the cursor to the screen width, minus 5 character widths.
-    int str_pos = sw - cw * 5;
+	// ------------------------------------------------- drawing dynamic strings
+	//move the cursor to the screen width, minus 5 character widths.
+	int str_pos = sw - cw * 5;
 
-    screen.setCursor(str_pos, 12 + ch);     // and down 12 + a character height.
-    screen.print(x);
-    screen.setCursor(str_pos, 12 + 2 * ch); // and down 12 + 2 character heights
-    screen.print(y);
-    screen.setCursor(str_pos, 12 + 3 * ch); // and down 12 + 3 character heights
-    screen.print(z);
+	screen.setCursor(str_pos, 12 + ch);	 // and down 12 + a character height.
+	screen.print(x);
+	screen.setCursor(str_pos, 12 + 2 * ch); // and down 12 + 2 character heights
+	screen.print(y);
+	screen.setCursor(str_pos, 12 + 3 * ch); // and down 12 + 3 character heights
+	screen.print(z);
 
-    // --------------------------------------------------- draw static direction
-    screen.setCursor(text_offset, sh - ch); // along the bottom,
-    screen.println(direction_string.c_str());
+	// --------------------------------------------------- draw static direction
+	screen.setCursor(text_offset, sh - ch); // along the bottom,
+	screen.println(direction_string.c_str());
 
-    //blit all this to the screen
-    screen.display();
+	//blit all this to the screen
+	screen.display();
 }
