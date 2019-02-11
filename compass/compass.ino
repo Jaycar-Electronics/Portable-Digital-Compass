@@ -4,23 +4,21 @@
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
-MAG3110 mag; //create magnetometer object
-//Adafruit_SSD1306 screen(4); //create screen object, no reset pin
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 32
-#define OLED_RESET 4
-//Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-Adafruit_SSD1306 screen(0);
 
 #include "./startup_bitmap.h"
 
-#define text_offset 96
+#define text_offset 34
 #define cw 5 //character width
 #define ch 8 //character height
-#define sw 128 //screen width
-#define sh 32 // screen height
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET 0
 
-String direction_string = "Undefined";
+Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+MAG3110 mag; //create magnetometer object
+
+String direction_string = "North west";
 
 void setup(){
 
@@ -28,6 +26,7 @@ void setup(){
 	mag.initialize();
 	screen.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 	screen.setTextSize(1);
+	screen.setTextColor(WHITE);
 	screen.clearDisplay();
 	screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
 	screen.display();
@@ -71,6 +70,8 @@ void loop(){
 	int cx = sin(rad-half_pi) * half_radius;
 	int cy = cos(rad-half_pi) * half_radius;
 
+
+	//draw all x,y points by offsetting their values to the centre of the circle
 	//north facing triangle is filled in
 	screen.fillTriangle(
 		Cx + ax, Cy + ay,
@@ -85,28 +86,24 @@ void loop(){
 	// leaving 96 x 32  for text
 	screen.setCursor(text_offset,0);
 	screen.print(F("Heading"));
-
-	screen.setCursor(text_offset, 12);
-	screen.println(F("raw values:")); //drops 8 pixels
-	screen.println(F("x:"));
-	screen.println(F("y:"));
-	screen.println(F("z:"));
-
-	// ------------------------------------------------- drawing dynamic strings
-	//move the cursor to the screen width, minus 5 character widths.
-	int str_pos = sw - cw * 5;
-
-	screen.setCursor(str_pos, 12 + ch);	 // and down 12 + a character height.
-	screen.print(x);
-	screen.setCursor(str_pos, 12 + 2 * ch); // and down 12 + 2 character heights
-	screen.print(y);
-	screen.setCursor(str_pos, 12 + 3 * ch); // and down 12 + 3 character heights
-	screen.print(z);
-
-	// --------------------------------------------------- draw static direction
-	screen.setCursor(text_offset, sh - ch); // along the bottom,
+	screen.setCursor(text_offset,0 + ch + 4); // under heading, with padding
 	screen.println(direction_string.c_str());
+
+
+	//128 remaining space divided by 3 is ~43
+	#define s_div 43
+
+	screen.setCursor(0,			SCREEN_HEIGHT - (2*ch));	screen.print(F("x:")); 
+	screen.setCursor(0,			SCREEN_HEIGHT - ch);		screen.print(x); 
+
+	screen.setCursor(s_div,		SCREEN_HEIGHT - (2*ch));	screen.print(F("y:"));
+	screen.setCursor(s_div,		SCREEN_HEIGHT - ch);		screen.print(y);
+
+	screen.setCursor(2*s_div,	SCREEN_HEIGHT - (2*ch));	screen.print(F("z:"));
+	screen.setCursor(2*s_div,	SCREEN_HEIGHT - ch);		screen.print(z);
 
 	//blit all this to the screen
 	screen.display();
+
+	delay(500);
 }
