@@ -21,7 +21,7 @@ Not just a great project for the coming holiday break, this compass can be used 
 | --- | --- | --- |
 | Adafruit_GFX | Adafruit | 1.0.2 |
 | Adafruit_SSD1306 | Adafruit | 1.1.2 |
-| I2C-Sensor_Lib | Ingmar Splitt | 0.8.2 |
+| SparkFun MAG3110 | SparkFun | [Github Link](https://github.com/sparkfun/SparkFun_MAG3110_Breakout_Board_Arduino_Library/archive/master.zip) |
 
 
 ## Connection table
@@ -146,7 +146,7 @@ If you remember your trigonometry, this is how it should turn out:
 
 ![](images/trig.png)
 
-We reverse the outside point so that we can get the other direction aswel, and make it look more like a compass with the north and south directions.
+We reverse the outside point so that we can get the other direction as well, and make it look more like a compass with the north and south directions.
 
 ## Use
 
