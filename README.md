@@ -52,7 +52,7 @@ We first need to cut a window out for the OLED screen, so position it like so, o
 
 We want the modules to sit in the centre of the lid, with the arduino on top, as this is the only place where we have room for all the electronics in the case.
 
-Use a sharp knife or screwdriver to run around the edges of the glass screen so you know how and where to cut out.
+Use a sharp knife or screwdriver to run around the edges of the glass screen so you know how and where to cut out. The size of the cutout is 19.5mm x 27mm, to fit the glass screen.
 
 Then cut out the window, and file it down so it's smooth. When checking for the OLED to fit, be sure not to push too hard, as the glass is thin and can break easily.
 
