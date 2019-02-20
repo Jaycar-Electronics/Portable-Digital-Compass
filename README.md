@@ -152,4 +152,4 @@ We reverse the outside point so that we can get the other direction as well, and
 
 ## Use
 
-Before first use, the magnetometer will have to be calibrated. Check the code for comments on how to calibrate it.
+Before first use, the magnetometer will have to be calibrated. When you start the unit up, it will ask you to spin around on the spot for it to find its bearings. You will then be able to align towards earth's magnetic fields. 
