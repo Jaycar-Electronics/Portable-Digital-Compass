@@ -21,7 +21,9 @@ Not just a great project for the coming holiday break, this compass can be used 
 | --- | --- | --- |
 | Adafruit_GFX | Adafruit | 1.0.2 |
 | Adafruit_SSD1306 | Adafruit | 1.1.2 |
-| SparkFun MAG3110 | SparkFun | [Github Link](https://github.com/sparkfun/SparkFun_MAG3110_Breakout_Board_Arduino_Library/archive/master.zip) |
+
+* SparkFun MAG3110
+    * [Github Link](https://github.com/sparkfun/SparkFun_MAG3110_Breakout_Board_Arduino_Library/archive/master.zip)
 
 
 ## Connection table
