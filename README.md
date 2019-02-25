@@ -13,7 +13,7 @@ Not just a great project for the coming holiday break, this compass can be used 
 |1 | [WC6026](http://jaycar.com.au/p/WC6026) | Socket Socket leads
 |1 | [ZV1505](http://jaycar.com.au/p/ZV1505) | voltage regulator 5V
 |1 | [MP3083](http://jaycar.com.au/p/MP3083) | 4AA battery bank with USB
-|1 | [SB2300](http://jaycar.com.au/p/SB2300) | rechargable 14500 battery
+|2 | [SB2300](http://jaycar.com.au/p/SB2300) | rechargable 14500 battery
 
 ## Software and Libraries
 
@@ -152,4 +152,4 @@ We reverse the outside point so that we can get the other direction as well, and
 
 ## Use
 
-Before first use, the magnetometer will have to be calibrated. When you start the unit up, it will ask you to spin around on the spot for it to find its bearings. You will then be able to align towards earth's magnetic fields. 
+Before first use, the magnetometer will have to be calibrated. When you start the unit up, it will ask you to spin around on the spot for it to find its bearings. You will then be able to align towards earth's magnetic fields.
