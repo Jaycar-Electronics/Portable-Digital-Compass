@@ -1,7 +1,7 @@
 //https://github.com/sparkfun/SparkFun_MAG3110_Breakout_Board_Arduino_Library/archive/master.zip
 #include <SparkFun_MAG3110.h>
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306.h> // Version 1.2.9
 #include <Wire.h>
 
 #include "./startup_bitmap.h"
@@ -20,6 +20,17 @@
 // create screen object
 Adafruit_SSD1306 screen(screen_width, screen_height, &Wire, 0);
 
+const char *directions[] = {
+  //F("No Direction"),
+	"North East",
+	"East      ",
+	"South East",
+	"South     ",
+	"South West",
+	"West      ",
+	"North West",
+	"North     "
+};
 // create compass object
 //Compass mag;
 MAG3110 mag = MAG3110();
@@ -30,7 +41,7 @@ void draw_compass(Adafruit_GFX *screen, uint8_t centre_x, uint8_t centre_y, uint
 
 void setup(){
 
-	//initialise 
+	//initialise
 	Serial.begin(9600); //debugging to USB
 	mag.initialize();
 	mag.enterCalMode();
@@ -55,7 +66,7 @@ void loop(){
 
 	if (mag.isCalibrating()){
 		//display calibration screen
-		screen.setCursor(20,20);	
+		screen.setCursor(20,20);
 		screen.print(F("Spin on the spot"));
 		screen.display();
 		mag.calibrate();
@@ -70,25 +81,23 @@ void loop(){
 		heading += 180;
 		heading %= 360; // wrap it around 360;
 
-		rad = heading / (2*pi);
-		
-		//debug
-		//rad += 0.05;
+		rad = heading * pi / 180;
+
 		rad = rad > 6.283 ? rad - 6.283 : rad;
 
 		//draw compass function
 		draw_compass(&screen, 16, 16, 16, rad);
 
 		//set the cursor to positions and draw strings
-		screen.setCursor(text_offset,0);	
+		screen.setCursor(text_offset,0);
 		screen.print(F("Heading"));
 
-		screen.setCursor(text_offset,0 + char_height + 4);					
-		screen.print(direction_string.c_str());
+		screen.setCursor(text_offset,0 + char_height + 4);
+		screen.print(directions[ (heading+23) / 45 ]); //23 here is a rough "45/2" - divides 360 circle into 8 for directions
 
 
-		screen.setCursor(0,			screen_height - (2*char_height));	screen.print(F("x:")); 
-		screen.setCursor(0,			screen_height - char_height);		screen.print(x); 
+		screen.setCursor(0,			screen_height - (2*char_height));	screen.print(F("x:"));
+		screen.setCursor(0,			screen_height - char_height);		screen.print(x);
 
 		screen.setCursor(s_div,		screen_height - (2*char_height));	screen.print(F("y:"));
 		screen.setCursor(s_div,		screen_height - char_height);		screen.print(y);
@@ -109,7 +118,7 @@ void draw_compass(Adafruit_GFX *screen, uint8_t centre_x, uint8_t centre_y, uint
 	// pointers mean we use '->' notation
 
 	screen->drawCircle(centre_x, centre_y, radius, WHITE);
-	
+
 	uint8_t half_radius = radius / 2;
 
 	int ax = sin(rad)  * radius;             int ay = cos(rad)  * radius;
