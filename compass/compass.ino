@@ -20,22 +20,20 @@
 // create screen object
 Adafruit_SSD1306 screen(screen_width, screen_height, &Wire, 0);
 
-const char *directions[] = {
-  //F("No Direction"),
-	"North East",
-	"East      ",
-	"South East",
-	"South     ",
-	"South West",
-	"West      ",
+const char *directions[] = { //goes counter clockwise
 	"North West",
+	"West      ",
+	"South West",
+	"South     ",
+	"South East",
+	"East      ",
+	"North East",
 	"North     "
 };
 // create compass object
 //Compass mag;
 MAG3110 mag = MAG3110();
 
-String direction_string = "No Direction";
 
 void draw_compass(Adafruit_GFX *screen, uint8_t centre_x, uint8_t centre_y, uint8_t radius, double rad);
 
@@ -55,25 +53,38 @@ void setup(){
 	screen.drawBitmap(0,0, compass_startup_bmp, 128, 32, WHITE);
 	screen.display();
 	delay(1000); // hold it for one second
-
+  screen.clearDisplay();
 }
 
 double rad = 0;
 int x,y,z;
-void loop(){
+long timer = 0;
+bool flash = true;
 
-	screen.clearDisplay(); //clear internal buffer
+void loop(){
 
 	if (mag.isCalibrating()){
 		//display calibration screen
-		screen.setCursor(20,20);
-		screen.print(F("Spin on the spot"));
-		screen.display();
+		screen.setCursor(0,20);
+    screen.print(F("Fetching magnetic      fields"));
+    screen.setCursor(20,40);
+    
+    if( millis() - timer > 1000){   //this will trigger every second
+      timer = millis();
+      
+      //toggle flashing text
+      if(flash)
+		    screen.print(F("Spin on the spot"));
+      else
+        screen.print(F("                "));
+      flash = !flash;
+    }
 		mag.calibrate();
+   
 	}
 
 	if (mag.isCalibrated() && mag.dataReady()){
-
+    screen.clearDisplay(); //clear internal buffer
 		mag.readMag(&x, &y, &z);
 		int heading = (int) mag.readHeading(); //add screen orientation
 
@@ -91,9 +102,11 @@ void loop(){
 		//set the cursor to positions and draw strings
 		screen.setCursor(text_offset,0);
 		screen.print(F("Heading"));
+    screen.setCursor(105,0);
+    screen.print(heading);
 
 		screen.setCursor(text_offset,0 + char_height + 4);
-		screen.print(directions[ (heading+23) / 45 ]); //23 here is a rough "45/2" - divides 360 circle into 8 for directions
+		screen.print(directions[( (heading+23) / 45 ) % 8]); //23 here is a rough "45/2" - divides 360 circle into 8 for directions
 
 
 		screen.setCursor(0,			screen_height - (2*char_height));	screen.print(F("x:"));
